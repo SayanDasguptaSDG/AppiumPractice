@@ -11,6 +11,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Duration;
 
 public class BaseTest {
     public AndroidDriver driver;
@@ -33,6 +34,7 @@ public class BaseTest {
 
         driver = new AndroidDriver(
                 new URI("http://127.0.0.1:4723").toURL(), options);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
     }
 
     @AfterClass
