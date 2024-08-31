@@ -26,9 +26,9 @@ public class AppiumBasics extends BaseTest {
         driver.findElement(AppiumBy.accessibilityId("Expandable Lists")).click();
         driver.findElement(AppiumBy.xpath("//android.widget.TextView[@content-desc=\"1. Custom Adapter\"]")).click();
         WebElement element = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"People Names\"]"));
-        ((JavascriptExecutor) driver).executeScript("mobile:longClickGesture",
-                ImmutableMap.of("elementId", ((RemoteWebElement) element).getId(),
-                        "duration", 2000));
-        Thread.sleep(2000);
+        longPressAction(element);
+        String menu_text = driver.findElement(AppiumBy.id("android:id/title")).getText();
+        Assert.assertEquals(menu_text, "Sample menu");
+        Assert.assertTrue(driver.findElement(AppiumBy.id("android:id/title")).isDisplayed());
     }
 }
