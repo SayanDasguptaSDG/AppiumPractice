@@ -54,4 +54,14 @@ public class AppiumBasics extends BaseTest {
         swipeAction(first_image, "left");
         Assert.assertEquals(driver.findElement(AppiumBy.xpath("(//android.widget.ImageView)[1]")).getAttribute("focusable"), "false");
     }
+
+    @Test
+    public void dragAndDrop() throws InterruptedException {
+        driver.findElement(AppiumBy.accessibilityId("Views")).click();
+        driver.findElement(AppiumBy.accessibilityId("Drag and Drop")).click();
+        WebElement itemTobeDraggedAndDropped = driver.findElement(AppiumBy.id("io.appium.android.apis:id/drag_dot_1"));
+        dragAndDropAction(itemTobeDraggedAndDropped, 619, 560);
+        String result = driver.findElement(AppiumBy.id("io.appium.android.apis:id/drag_result_text")).getText();
+        Assert.assertEquals(result, "Dropped!");
+    }
 }

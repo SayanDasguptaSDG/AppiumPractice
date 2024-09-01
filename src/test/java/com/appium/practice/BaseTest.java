@@ -70,6 +70,14 @@ public class BaseTest {
                         "direction", direction, "percent", 0.75));
     }
 
+    public void dragAndDropAction(WebElement element, int x, int y) {
+        ((JavascriptExecutor) driver).executeScript("mobile: dragGesture", ImmutableMap.of(
+                "elementId", ((RemoteWebElement) element).getId(),
+                "endX", x,
+                "endY", y
+        ));
+    }
+
     @AfterClass
     public void tearDown() {
         driver.quit();
