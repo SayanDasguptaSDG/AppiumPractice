@@ -1,5 +1,7 @@
 package com.appium.practice;
+import com.google.common.collect.ImmutableMap;
 import io.appium.java_client.AppiumBy;
+import io.appium.java_client.android.Activity;
 import io.appium.java_client.android.nativekey.AndroidKey;
 import io.appium.java_client.android.nativekey.KeyEvent;
 import org.openqa.selenium.DeviceRotation;
@@ -116,5 +118,17 @@ public class AppiumBasics extends BaseTest {
         driver.findElements(AppiumBy.className("android.widget.Button")).get(1).click();
         driver.pressKey(new KeyEvent(AndroidKey.BACK));
         driver.pressKey(new KeyEvent(AndroidKey.HOME));
+    }
+
+    @Test
+    public void WiFiSettingsWithAppActivity() throws InterruptedException {
+        driver.executeScript("mobile: startActivity",
+                ImmutableMap.of("intent", "io.appium.android.apis/io.appium.android.apis.preference.PreferenceDependencies"));
+        driver.findElement(AppiumBy.id("android:id/checkbox")).click();
+        driver.findElement(AppiumBy.xpath("//android.widget.ListView[@resource-id=\"android:id/list\"]/android.widget.LinearLayout[2]/android.widget.RelativeLayout")).click();
+        String alert_title = driver.findElement(AppiumBy.id("android:id/alertTitle")).getText();
+        Assert.assertEquals(alert_title, "WiFi settings");
+        driver.findElement(AppiumBy.id("android:id/edit")).sendKeys("Dummy Text");
+        driver.findElements(AppiumBy.className("android.widget.Button")).get(1).click();
     }
 }
