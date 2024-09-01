@@ -1,5 +1,8 @@
 package com.appium.practice;
 import io.appium.java_client.AppiumBy;
+import io.appium.java_client.android.nativekey.AndroidKey;
+import io.appium.java_client.android.nativekey.KeyEvent;
+import org.openqa.selenium.DeviceRotation;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -63,5 +66,55 @@ public class AppiumBasics extends BaseTest {
         dragAndDropAction(itemTobeDraggedAndDropped, 619, 560);
         String result = driver.findElement(AppiumBy.id("io.appium.android.apis:id/drag_result_text")).getText();
         Assert.assertEquals(result, "Dropped!");
+    }
+
+    @Test
+    public void WiFiSettingsNameInLandscapeMode() throws InterruptedException {
+        driver.findElement(AppiumBy.accessibilityId("Preference")).click();
+        driver.findElement(AppiumBy.xpath("//android.widget.TextView[@content-desc=\"3. Preference dependencies\"]")).click();
+        driver.findElement(AppiumBy.id("android:id/checkbox")).click();
+
+        DeviceRotation deviceRotation = new DeviceRotation(0, 0, 90);
+        driver.rotate(deviceRotation);
+        Thread.sleep(2000);
+
+        driver.findElement(AppiumBy.xpath("//android.widget.ListView[@resource-id=\"android:id/list\"]/android.widget.LinearLayout[2]/android.widget.RelativeLayout")).click();
+        String alert_title = driver.findElement(AppiumBy.id("android:id/alertTitle")).getText();
+        Assert.assertEquals(alert_title, "WiFi settings");
+        driver.findElement(AppiumBy.id("android:id/edit")).sendKeys("TestWiFi");
+        driver.findElements(AppiumBy.className("android.widget.Button")).get(1).click();
+    }
+
+    @Test
+    public void copyAndPasteFromClipboard() {
+        driver.findElement(AppiumBy.accessibilityId("Preference")).click();
+        driver.findElement(AppiumBy.xpath("//android.widget.TextView[@content-desc=\"3. Preference dependencies\"]")).click();
+        driver.findElement(AppiumBy.id("android:id/checkbox")).click();
+
+        driver.findElement(AppiumBy.xpath("//android.widget.ListView[@resource-id=\"android:id/list\"]/android.widget.LinearLayout[2]/android.widget.RelativeLayout")).click();
+        String alert_title = driver.findElement(AppiumBy.id("android:id/alertTitle")).getText();
+        Assert.assertEquals(alert_title, "WiFi settings");
+        driver.setClipboardText("JOHN DOE");
+        driver.findElement(AppiumBy.id("android:id/edit")).sendKeys(driver.getClipboardText());
+        driver.findElements(AppiumBy.className("android.widget.Button")).get(1).click();
+    }
+
+    @Test
+    public void keyEvents() throws InterruptedException {
+        driver.findElement(AppiumBy.accessibilityId("Preference")).click();
+        driver.findElement(AppiumBy.xpath("//android.widget.TextView[@content-desc=\"3. Preference dependencies\"]")).click();
+        driver.findElement(AppiumBy.id("android:id/checkbox")).click();
+
+        driver.findElement(AppiumBy.xpath("//android.widget.ListView[@resource-id=\"android:id/list\"]/android.widget.LinearLayout[2]/android.widget.RelativeLayout")).click();
+        String alert_title = driver.findElement(AppiumBy.id("android:id/alertTitle")).getText();
+        Assert.assertEquals(alert_title, "WiFi settings");
+        driver.setClipboardText("JOHN DOE");
+        driver.findElement(AppiumBy.id("android:id/edit")).click();
+        driver.findElement(AppiumBy.id("android:id/edit")).sendKeys(driver.getClipboardText());
+        driver.pressKey(new KeyEvent(AndroidKey.ENTER));
+        Thread.sleep(2000);
+        driver.findElements(AppiumBy.className("android.widget.Button")).get(1).click();
+        driver.pressKey(new KeyEvent(AndroidKey.BACK));
+        driver.pressKey(new KeyEvent(AndroidKey.HOME));
     }
 }
