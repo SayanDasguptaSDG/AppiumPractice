@@ -41,7 +41,17 @@ public class AppiumBasics extends BaseTest {
 
         //when there is no prior destination, scroll till end - Appium action
         scrollToEndAction();
-
         Thread.sleep(2000);
+    }
+
+    @Test
+    public void swipeLeft() {
+        driver.findElement(AppiumBy.accessibilityId("Views")).click();
+        driver.findElement(AppiumBy.xpath("//android.widget.TextView[@content-desc=\"Gallery\"]")).click();
+        driver.findElement(AppiumBy.accessibilityId("1. Photos")).click();
+        WebElement first_image = driver.findElement(AppiumBy.xpath("(//android.widget.ImageView)[1]"));
+        Assert.assertEquals(driver.findElement(AppiumBy.xpath("(//android.widget.ImageView)[1]")).getAttribute("focusable"), "true");
+        swipeAction(first_image, "left");
+        Assert.assertEquals(driver.findElement(AppiumBy.xpath("(//android.widget.ImageView)[1]")).getAttribute("focusable"), "false");
     }
 }

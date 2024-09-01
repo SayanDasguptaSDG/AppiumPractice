@@ -48,6 +48,7 @@ public class BaseTest {
                 ImmutableMap.of("elementId", ((RemoteWebElement) element).getId(),
                         "duration", 2000));
     }
+
     @Description("Scroll Down Till End")
     public void scrollToEndAction() {
         boolean canScrollMore;
@@ -60,6 +61,13 @@ public class BaseTest {
                             "percent", 1.0
                     ));
         } while(canScrollMore);
+    }
+
+    @Description("Swipe Gesture")
+    public void swipeAction(WebElement element, String direction) {
+        ((JavascriptExecutor) driver).executeScript("mobile:swipeGesture",
+                ImmutableMap.of("elementId", ((RemoteWebElement) element).getId(),
+                        "direction", direction, "percent", 0.75));
     }
 
     @AfterClass
